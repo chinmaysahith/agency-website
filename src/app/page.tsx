@@ -7,17 +7,20 @@ import HowItWorks from "@/components/HowItWorks"
 import BigCTA from "@/components/BigCTA"
 import WhyChooseUs from "@/components/WhyChooseUs";
 import FAQ from "@/components/FAQ";
-import Work from "@/components/Work";
+import BrandStrip from "@/components/BrandStrip";
+
 
 export default function Home() {
   return (
     <main>
 
-      <Hero />
+    <Hero />
 
     <Services />
 
     <WhyChooseUs />
+
+    <BrandStrip />
 
     <Portfolio />
 

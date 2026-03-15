@@ -28,19 +28,22 @@ const projects = [
 
 export default function Portfolio() {
   return (
-    <section id="portfolio" className="py-28">
+    <section id="work" className="py-28 scroll-mt-40">
+
       <div className="max-w-4xl mx-auto px-6">
 
         {/* Heading */}
-        <div className="text-center mb-20">
+        <div className="text-center mb-24">
           <h2 className="text-4xl font-bold mb-4">Our Work</h2>
-          <p className="text-gray-500">
+
+          <p className="text-gray-500 max-w-xl mx-auto">
             A selection of projects we've built for startups and businesses.
           </p>
         </div>
 
+
         {/* Stacked Cards */}
-        <div className="space-y-24">
+        <div className="space-y-40">
 
           {projects.map((project, index) => (
             <motion.div
@@ -51,6 +54,7 @@ export default function Portfolio() {
               transition={{ duration: 0.6, ease: "easeOut" }}
               className="sticky top-32"
             >
+
               <div className="bg-white border border-gray-200 rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
 
                 {/* Image */}
@@ -81,7 +85,7 @@ export default function Portfolio() {
                     ))}
                   </div>
 
-                  {/* Case study */}
+                  {/* Case study link */}
                   <Link
                     href="#"
                     className="inline-flex items-center gap-1 text-sm font-medium text-black hover:gap-2 transition-all"
@@ -90,13 +94,16 @@ export default function Portfolio() {
                   </Link>
 
                 </div>
+
               </div>
+
             </motion.div>
           ))}
 
         </div>
 
       </div>
+
     </section>
   );
 }

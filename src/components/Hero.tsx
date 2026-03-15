@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Figma, Zap, Boxes } from "lucide-react";
 
 export default function Hero() {
   return (
@@ -72,13 +71,7 @@ export default function Hero() {
           We help startups and businesses design, build and scale modern
           digital products using cutting-edge technologies.
         </motion.p>
-        <motion.div
-  animate={{ y: [0, -10, 0] }}
-  transition={{ duration: 4, repeat: Infinity }}
-  className="hidden md:flex absolute right-[260px] top-20 bg-white shadow-lg border border-gray-200 p-3 rounded-xl"
->
-  <Figma size={20} />
-</motion.div>
+        
 
 
         {/* CTA Buttons */}
