@@ -27,7 +27,7 @@ body {
 /* Light dashed grid background */
 
 .dashed-grid {
-  background-color: #fafafa;
+  background-color: #ffffff;
   background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23e5e7eb' stroke-width='1' stroke-dasharray='4 4' fill='none'%3E%3Cpath d='M40 0H0V40'/%3E%3C/g%3E%3C/svg%3E");
   background-size: 40px 40px;
 }
@@ -49,4 +49,13 @@ body {
 
 .heartbeat {
   animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+@keyframes moveGrid {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 80px 80px; /* slower movement feel */
+  }
 }

@@ -11,14 +11,29 @@ const testimonials = [
 ];
 
 const N = testimonials.length;
-const RX = 480, RY = 80;
 const NORMAL_SPEED = 0.18;
+
+function getRadii() {
+  if (typeof window === "undefined") return { RX: 480, RY: 80 };
+  const w = window.innerWidth;
+  if (w < 480) return { RX: 140, RY: 45 };
+  if (w < 768) return { RX: 220, RY: 60 };
+  if (w < 1024) return { RX: 340, RY: 70 };
+  return { RX: 480, RY: 80 };
+}
 
 export default function TestimonialsCarousel() {
   const angleRef = useRef(0);
   const pausedRef = useRef(false);
   const targetAngleRef = useRef<number | null>(null);
   const rafRef = useRef<number | null>(null);
+  const radiiRef = useRef(getRadii());
+
+  useEffect(() => {
+    const onResize = () => { radiiRef.current = getRadii(); };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   useEffect(() => {
     const update = () => {
@@ -32,6 +47,8 @@ export default function TestimonialsCarousel() {
       } else if (!pausedRef.current) {
         angleRef.current = (angleRef.current + NORMAL_SPEED) % 360;
       }
+
+      const { RX, RY } = radiiRef.current;
 
       testimonials.forEach((_, i) => {
         const a = (angleRef.current + (360 / N) * i) % 360;
@@ -110,8 +127,8 @@ export default function TestimonialsCarousel() {
         @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
 
         .ts-section {
-          padding: 100px 0 90px;
-          background:#fafafa;
+          padding: 80px 0 70px;
+          background:#ffffff;
           overflow: hidden;
           font-family: 'Sora', sans-serif;
           text-align: center;
@@ -125,14 +142,14 @@ export default function TestimonialsCarousel() {
           pointer-events: none;
         }
 
-        .ts-heading { margin-bottom: 64px; padding: 0 20px; position: relative; z-index: 1; }
+        .ts-heading { margin-bottom: 48px; padding: 0 20px; position: relative; z-index: 1; }
         .ts-eyebrow { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: #3b82f6; background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); padding: 5px 14px; border-radius: 999px; margin-bottom: 16px; }
-        .ts-heading h2 { font-size: 40px; font-weight: 700; color: #0f172a; margin: 0 0 10px; letter-spacing: -1px; }
-        .ts-heading p { font-size: 15px; color: #64748b; margin: 0; }
+        .ts-heading h2 { font-size: clamp(26px, 5vw, 40px); font-weight: 700; color: #0f172a; margin: 0 0 10px; letter-spacing: -1px; }
+        .ts-heading p { font-size: 14px; color: #64748b; margin: 0; }
 
-        .ts-stage { position: relative; height: 400px; display: flex; align-items: center; justify-content: center; perspective: 1000px; z-index: 1; }
+        .ts-stage { position: relative; height: clamp(280px, 40vw, 400px); display: flex; align-items: center; justify-content: center; perspective: 1000px; z-index: 1; }
         .ts-track { position: relative; width: 0; height: 0; }
-        .ts-card { position: absolute; width: 280px; left: -140px; top: -160px; background: #fff; border-radius: 20px; padding: 26px 24px 22px; text-align: left; border: 1px solid rgba(0,0,0,0.05); cursor: pointer; will-change: transform,opacity; }
+        .ts-card { position: absolute; width: clamp(220px, 55vw, 280px); left: calc(clamp(-110px, -27.5vw, -140px)); top: -160px; background: #fff; border-radius: 20px; padding: 22px 20px 18px; text-align: left; border: 1px solid rgba(0,0,0,0.05); cursor: pointer; will-change: transform,opacity; }
         .ts-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
         .ts-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0; }
         .ts-stars { color: #f59e0b; font-size: 12px; letter-spacing: 1px; }

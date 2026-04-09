@@ -125,7 +125,7 @@ export default function WhyChooseUs() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 px-6 dashed-grid overflow-hidden"
+      className="relative py-16 sm:py-24 px-4 sm:px-6 dashed-grid overflow-hidden"
     >
       {/* Cursor glow orb — blurs the GRID behind it, not the cards */}
       <div
@@ -148,17 +148,7 @@ export default function WhyChooseUs() {
 
         {/* Heading */}
         <div ref={headingRef} className="text-center mb-16 opacity-0">
-          <div
-            className="inline-block px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-4"
-            style={{
-              background: "rgba(37,99,235,0.08)",
-              color:      "#2563EB",
-              border:     "1px solid rgba(37,99,235,0.15)",
-            }}
-          >
-            Why APSLOCK
-          </div>
-          <h2 className="text-4xl font-bold mb-4" style={{ color: "#0F172A" }}>
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: "#0F172A" }}>
             Why Choose Our Agency?
           </h2>
           <p className="max-w-2xl mx-auto" style={{ color: "#64748B" }}>

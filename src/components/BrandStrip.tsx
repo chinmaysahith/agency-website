@@ -1,79 +1,58 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-
 const brands = [
-  "Framer",
-  "Linear",
-  "Vercel",
-  "Supabase",
-  "Adobe",
-  "Facebook",
-  "Stripe",
+  "Framer", "Linear", "Vercel", "Supabase", "Adobe", "Stripe", "Figma", "Notion",
 ];
 
 export default function BrandStrip() {
-  const trackRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-
-    const width = track.scrollWidth / 3;
-
-    gsap.fromTo(
-      track,
-      { x: 0 },
-      {
-        x: -width,
-        duration: 30,
-        ease: "none",
-        repeat: -1,
-      }
-    );
-  }, []);
-
   return (
-    <section className="relative py-28 bg-[#fafafa] overflow-hidden">
+    <section className="relative bg-white overflow-hidden border-y border-gray-100 py-10">
 
-      {/* BIG BACKGROUND APSLOCK TEXT */}
+      {/* APSLOCK watermark */}
       <div
         className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
         style={{
-          fontSize: "clamp(7rem,16vw,16rem)",
+          fontSize: "clamp(5rem, 14vw, 13rem)",
           fontWeight: 900,
-          letterSpacing: "-0.05em",
-          background:
-            "linear-gradient(to bottom, rgba(90,110,160,0.18), rgba(90,110,160,0.08), rgba(90,110,160,0.03), transparent)",
+          letterSpacing: "-0.04em",
+          whiteSpace: "nowrap",
+          background: "linear-gradient(to bottom, rgba(148,163,184,0.22) 0%, rgba(148,163,184,0.08) 60%, transparent 100%)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
-          whiteSpace: "nowrap",
+          backgroundClip: "text",
         }}
       >
         APSLOCK
       </div>
 
-      {/* SCROLL STRIP */}
-      <div className="relative z-10 bg-[#fafafa] py-4 overflow-hidden">
-
-        <div
-          ref={trackRef}
-          className="flex w-max gap-16 text-gray-400 text-base font-semibold"
-          style={{ willChange: "transform" }}
-        >
-          {[...brands, ...brands, ...brands].map((brand, i) => (
-            <span key={i}>{brand}</span>
+      {/* Infinite marquee */}
+      <div className="relative overflow-hidden z-10">
+        <div className="marquee-track flex w-max items-center">
+          {[...brands, ...brands].map((brand, i) => (
+            <span
+              key={i}
+              className="flex items-center text-[13px] font-semibold text-gray-400 tracking-wide px-8 select-none whitespace-nowrap"
+            >
+              {brand}
+              <span className="ml-8 w-1 h-1 rounded-full bg-gray-300 inline-block" />
+            </span>
           ))}
         </div>
 
+        {/* Fade edges */}
+        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent pointer-events-none z-10" />
+        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent pointer-events-none z-10" />
       </div>
 
-      {/* LEFT FADE EDGE */}
-      <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-[#fafafa] to-transparent pointer-events-none" />
-
-      {/* RIGHT FADE EDGE */}
-      <div className="absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-[#fafafa] to-transparent pointer-events-none" />
+      <style jsx>{`
+        .marquee-track {
+          animation: marquee 20s linear infinite;
+        }
+        @keyframes marquee {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
 
     </section>
   );

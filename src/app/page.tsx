@@ -16,11 +16,11 @@ export default function Home() {
 
     <Hero />
 
+    <BrandStrip />
+
     <Services />
 
     <WhyChooseUs />
-
-    <BrandStrip />
 
     <Portfolio />
 

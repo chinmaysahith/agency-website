@@ -26,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="pt-24 dashed-grid">
+      <body className="pt-20 sm:pt-24 dashed-grid">
 
         <Navbar />
         {children}

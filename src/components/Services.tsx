@@ -17,11 +17,7 @@ export default function Services() {
       <div className="s-grid" />
 
       <div className="s-head">
-        <div className="s-head-left">
-          <span className="s-eye">What we offer</span>
-          <h2 className="s-h2">Our Services</h2>
-        </div>
-        <div className="s-hint">Hover to explore <span className="s-arrow">→</span></div>
+        <h2 className="s-h2">Our Services</h2>
       </div>
 
       <div className="panel">
@@ -48,7 +44,7 @@ export default function Services() {
         @import url('https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Sora:wght@300;400;500;600;700&display=swap');
 
         .s-section {
-          background:#fafafa;
+          background:#ffffff;
           font-family: 'Sora', sans-serif;
           position: relative;
           overflow: hidden;
@@ -61,18 +57,9 @@ export default function Services() {
         }
         .s-head {
           padding: 80px 60px 24px; position: relative; z-index: 2;
-          display: flex; align-items: flex-end; justify-content: space-between;
+          display: flex; justify-content: center;
         }
-        .s-eye {
-          display: inline-block; font-size: 9px; font-weight: 700;
-          letter-spacing: 3px; text-transform: uppercase; color: #3b82f6;
-          background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2);
-          padding: 5px 14px; border-radius: 999px; margin-bottom: 12px;
-        }
-        .s-h2 { font-family: 'Clash Display', sans-serif; font-size: 44px; font-weight: 700; color: #0f172a; letter-spacing: -2px; line-height: 1; margin: 0; }
-        .s-hint { font-size: 11px; color: #94a3b8; font-weight: 500; display: flex; align-items: center; gap: 6px; padding-bottom: 6px; }
-        .s-arrow { display: inline-block; animation: nudge 1.5s ease-in-out infinite; }
-        @keyframes nudge { 0%,100%{transform:translateX(0)} 50%{transform:translateX(4px)} }
+        .s-h2 { font-family: 'Clash Display', sans-serif; font-size: 44px; font-weight: 700; color: #0f172a; letter-spacing: -2px; line-height: 1; margin: 0; text-align: center; }
 
         .panel { display: flex; height: 520px; position: relative; z-index: 2; }
         .svc { position: relative; overflow: hidden; cursor: pointer; flex: 0.5; border-right: 1px solid rgba(0,0,0,0.06); transition: flex 0.65s cubic-bezier(0.4,0,0.2,1); }
@@ -95,6 +82,42 @@ export default function Services() {
         .svc-desc { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.7; font-weight: 300; max-width: 300px; margin-bottom: 20px; }
         .svc-btn { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px 20px; border-radius: 999px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-family: 'Sora', sans-serif; }
         .svc-btn:hover { background: rgba(255,255,255,0.2); }
+
+        /* ── Mobile: stacked cards ── */
+        @media (max-width: 767px) {
+          .s-head { padding: 60px 20px 20px; }
+          .s-h2 { font-size: 32px; letter-spacing: -1px; }
+          .panel {
+            flex-direction: column;
+            height: auto;
+            padding: 0 16px 56px;
+            gap: 10px;
+          }
+          .svc {
+            flex: none !important;
+            height: 200px;
+            border-right: none !important;
+            border-radius: 16px;
+          }
+          /* Force all cards into "active" visual state on mobile */
+          .svc .svc-bg { opacity: 0.88 !important; transform: scale(1) !important; }
+          .svc .svc-overlay { opacity: 1 !important; }
+          .svc .svc-strip { opacity: 0 !important; pointer-events: none; }
+          .svc .svc-line { transform: scaleX(1) !important; }
+          .svc .svc-content { opacity: 1 !important; transform: translateY(0) !important; padding: 20px 22px; }
+          .svc-title { font-size: 22px !important; margin-bottom: 6px; }
+          .svc-desc { font-size: 12px; max-width: 100%; margin-bottom: 12px; }
+        }
+
+        /* ── Tablet: 2-column grid ── */
+        @media (min-width: 640px) and (max-width: 767px) {
+          .panel {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr;
+            flex-direction: unset;
+          }
+          .svc:last-child { grid-column: span 2; height: 180px; }
+        }
       `}</style>
     </section>
   );

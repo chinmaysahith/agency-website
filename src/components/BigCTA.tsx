@@ -82,14 +82,14 @@ export default function CTA() {
   const bow = 22;  // how much sides bow outward
 
   return (
-    <section className="py-16 px-6">
+    <section className="py-10 sm:py-16 px-4 sm:px-6">
       <div
-        className="max-w-7xl mx-auto rounded-3xl overflow-hidden"
+        className="max-w-7xl mx-auto rounded-2xl sm:rounded-3xl overflow-hidden"
         style={{ background: "#080808" }}
       >
 
         {/* Top CTA */}
-        <div className="flex flex-col items-center justify-center py-24 px-8 text-center">
+        <div className="flex flex-col items-center justify-center py-16 sm:py-24 px-5 sm:px-8 text-center">
           <h2
             ref={headingRef}
             className="text-3xl md:text-5xl font-bold max-w-3xl leading-tight mb-12 opacity-0"
@@ -184,7 +184,7 @@ export default function CTA() {
                     style={{
                       background: "rgba(255,255,255,0.08)",
                       border: "1px solid rgba(255,255,255,0.15)",
-                      color: "#E2E8F0",
+                      color: "#ffffff",
                     }}
                   >
                     <svg
@@ -239,7 +239,7 @@ export default function CTA() {
                     Q 2 ${H / 2} ${bow} 2
                     Z
                   `}
-                  stroke="rgba(255,255,255,0.3)"
+                  stroke="rgba(255, 255, 255, 0.3)"
                   strokeWidth="1"
                   fill="none"
                 />

@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -32,22 +32,26 @@ const projects = [
 
 export default function Portfolio() {
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   useLayoutEffect(() => {
+    if (isMobile) return;
     const wrapper = wrapperRef.current;
     if (!wrapper) return;
 
     const ctx = gsap.context(() => {
       const cards = gsap.utils.toArray<HTMLElement>(".project-card");
-
       const gap = 300;
 
-      // Initial positions
       cards.forEach((card, i) => {
-        gsap.set(card, {
-          x: window.innerWidth + i * gap,
-          opacity: 0,
-        });
+        gsap.set(card, { x: window.innerWidth + i * gap, opacity: 0 });
       });
 
       const tl = gsap.timeline({
@@ -62,82 +66,84 @@ export default function Portfolio() {
       });
 
       cards.forEach((card, i) => {
-        tl.to(
-          card,
-          {
-            x: i * gap,
-            opacity: 1,
-            ease: "power2.out",
-            duration: 1,
-          },
-          i
-        );
+        tl.to(card, { x: i * gap, opacity: 1, ease: "power2.out", duration: 1 }, i);
       });
     }, wrapper);
 
     return () => ctx.revert();
-  }, []);
+  }, [isMobile]);
 
+  const sectionStyle = {
+    background: "#ffffff",
+    backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23e5e7eb' stroke-width='1' stroke-dasharray='4 4' fill='none'%3E%3Cpath d='M40 0H0V40'/%3E%3C/g%3E%3C/svg%3E\")",
+    backgroundSize: "40px 40px",
+  };
+
+  /* ── Mobile: simple responsive grid ── */
+  if (isMobile) {
+    return (
+      <section id="work" style={sectionStyle} className="py-20 px-5">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-3">Our Work</h2>
+          <p className="text-gray-500 text-sm">A selection of projects we've built.</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-2xl mx-auto">
+          {projects.map((project, index) => (
+            <div
+              key={index}
+              className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden"
+            >
+              <div className="h-36 bg-gray-100" />
+              <div className="p-5">
+                <h3 className="text-base font-semibold mb-1.5 text-gray-900">{project.title}</h3>
+                <p className="text-gray-500 mb-3 text-sm">{project.description}</p>
+                <div className="flex flex-wrap gap-1.5 mb-3">
+                  {project.tech.map((tech, i) => (
+                    <span key={i} className="text-[11px] px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+                <Link href="#" className="text-xs font-medium text-black">View Case Study →</Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  /* ── Desktop: GSAP scroll animation ── */
   return (
-    <section
-      ref={wrapperRef}
-      className="relative"
-      style={{
-        background: "#fafafa",
-        backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23e5e7eb' stroke-width='1' stroke-dasharray='4 4' fill='none'%3E%3Cpath d='M40 0H0V40'/%3E%3C/g%3E%3C/svg%3E\")",
-        backgroundSize: "40px 40px",
-      }}
-    >
-
-      {/* Heading */}
+    <section ref={wrapperRef} id="work" className="relative" style={sectionStyle}>
       <div className="absolute top-16 w-full text-center z-10">
         <h2 className="text-3xl font-bold mb-3">Our Work</h2>
-        <p className="text-gray-500 text-sm">
-          A selection of projects we've built.
-        </p>
+        <p className="text-gray-500 text-sm">A selection of projects we've built.</p>
       </div>
 
-      {/* Sticky Area */}
       <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
-
         <div className="relative w-full max-w-6xl h-[300px]">
-
           {projects.map((project, index) => (
             <div
               key={index}
               className="project-card absolute top-0 w-[260px] md:w-[280px] bg-white border border-gray-200 rounded-xl shadow-md overflow-hidden"
             >
               <div className="h-40 bg-gray-200" />
-
               <div className="p-5">
-                <h3 className="text-lg font-semibold mb-2 text-gray-900">
-                  {project.title}
-                </h3>
-
-                <p className="text-gray-600 mb-3 text-sm">
-                  {project.description}
-                </p>
-
+                <h3 className="text-lg font-semibold mb-2 text-gray-900">{project.title}</h3>
+                <p className="text-gray-600 mb-3 text-sm">{project.description}</p>
                 <div className="flex flex-wrap gap-2 mb-3">
                   {project.tech.map((tech, i) => (
-                    <span
-                      key={i}
-                      className="text-[11px] px-2 py-1 rounded-full bg-gray-100 text-gray-600"
-                    >
+                    <span key={i} className="text-[11px] px-2 py-1 rounded-full bg-gray-100 text-gray-600">
                       {tech}
                     </span>
                   ))}
                 </div>
-
-                <Link href="#" className="text-xs font-medium text-black">
-                  View Case Study →
-                </Link>
+                <Link href="#" className="text-xs font-medium text-black">View Case Study →</Link>
               </div>
             </div>
           ))}
-
         </div>
-
       </div>
     </section>
   );
