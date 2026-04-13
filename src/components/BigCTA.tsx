@@ -76,10 +76,6 @@ export default function CTA() {
     );
   }, []);
 
-  // Tunnel dimensions
-  const W = 280;   // total width
-  const H = 80;    // total height
-  const bow = 22;  // how much sides bow outward
 
   return (
     <section className="py-10 sm:py-16 px-4 sm:px-6">
@@ -136,7 +132,7 @@ export default function CTA() {
           {/* Track */}
           <div
             className="relative overflow-hidden pb-10"
-            style={{ height: `${H + 10}px` }}
+            style={{ height: 90 }}
           >
 
             {/* LEFT HALF — hollow */}
@@ -204,76 +200,79 @@ export default function CTA() {
               </div>
             </div>
 
-            {/* ── BARREL TUNNEL — single SVG path ── */}
+            {/* ── CONCAVE LENS — opposite open brackets ── */}
             <div
               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-              style={{ zIndex: 20 }}
+              style={{
+                width: 250,
+                height: 60,
+                background:
+                  'radial-gradient(15px 40px at 0% 50%, transparent 99%, #0D0D0D 100%) left / 51% 100% no-repeat,' +
+                  'radial-gradient(15px 40px at 100% 50%, transparent 99%, #0D0D0D 100%) right / 51% 100% no-repeat',
+                zIndex: 20,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
             >
-              <svg
-                width={W + bow * 2}
-                height={H}
-                viewBox={`0 0 ${W + bow * 2} ${H}`}
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                {/* Background fill — matches strip so tags hide behind it */}
-                <path
-                  d={`
-                    M ${bow} 0
-                    L ${W + bow} 0
-                    Q ${W + bow * 2} ${H / 2} ${W + bow} ${H}
-                    L ${bow} ${H}
-                    Q 0 ${H / 2} ${bow} 0
-                    Z
-                  `}
-                  fill="#0D0D0D"
-                />
-
-                {/* Barrel outline stroke — the actual visible shape */}
-                <path
-                  d={`
-                    M ${bow} 2
-                    L ${W + bow} 2
-                    Q ${W + bow * 2 - 2} ${H / 2} ${W + bow} ${H - 2}
-                    L ${bow} ${H - 2}
-                    Q 2 ${H / 2} ${bow} 2
-                    Z
-                  `}
-                  stroke="rgba(255, 255, 255, 0.3)"
-                  strokeWidth="1"
-                  fill="none"
-                />
-
-                {/* APSLOCK text centered */}
-                <text
-                  x="50%"
-                  y="42%"
-                  textAnchor="middle"
-                  dominantBaseline="middle"
-                  fill="#F8FAFC"
-                  fontSize="13"
-                  fontWeight="700"
-                  letterSpacing="4"
-                  fontFamily="inherit"
+              {/* Left concave arc border */}
+              <div
+                style={{
+                  content: '""',
+                  position: 'absolute',
+                  top: -10,
+                  bottom: -10,
+                  left: -15,
+                  width: 30,
+                  borderRight: '1.5px solid rgba(255, 255, 255, 0.95)',
+                  borderRadius: '50%',
+                  filter: 'drop-shadow(0 0 3px rgba(255, 255, 255, 0.6))',
+                  boxShadow: '10px 0 20px -5px rgba(255, 255, 255, 0.05)',
+                  zIndex: 21,
+                }}
+              />
+              {/* Right concave arc border */}
+              <div
+                style={{
+                  content: '""',
+                  position: 'absolute',
+                  top: -10,
+                  bottom: -10,
+                  right: -15,
+                  width: 30,
+                  borderLeft: '1.5px solid rgba(255, 255, 255, 0.95)',
+                  borderRadius: '50%',
+                  filter: 'drop-shadow(0 0 3px rgba(255, 255, 255, 0.6))',
+                  boxShadow: '-10px 0 20px -5px rgba(255, 255, 255, 0.05)',
+                  zIndex: 21,
+                }}
+              />
+              {/* Center text */}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                <span
+                  style={{
+                    fontSize: '1.25rem',
+                    fontWeight: 500,
+                    fontFamily: "'Outfit', sans-serif",
+                    color: 'rgba(255, 255, 255, 1)',
+                    letterSpacing: '0.5px',
+                    textShadow: '0 0 8px rgba(255, 255, 255, 0.3)',
+                  }}
                 >
                   APSLOCK
-                </text>
-
-                {/* Subtitle */}
-                <text
-                  x="50%"
-                  y="70%"
-                  textAnchor="middle"
-                  dominantBaseline="middle"
-                  fill="rgba(255,255,255,0.25)"
-                  fontSize="7"
-                  fontWeight="500"
-                  letterSpacing="3"
-                  fontFamily="inherit"
+                </span>
+                <span
+                  style={{
+                    fontSize: 7,
+                    fontWeight: 500,
+                    letterSpacing: 3,
+                    color: 'rgba(255,255,255,0.25)',
+                    fontFamily: 'inherit',
+                  }}
                 >
                   DIGITAL AGENCY
-                </text>
-              </svg>
+                </span>
+              </div>
             </div>
 
             {/* Edge fades */}

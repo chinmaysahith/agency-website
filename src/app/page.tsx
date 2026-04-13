@@ -1,9 +1,8 @@
 import Hero from "@/components/Hero";
-import Services from "@/components/Services";
-import Portfolio from "@/components/Portfolio";
-import Testimonials from "@/components/TestimonialsCarousel";
-import CTA from "@/components/CTA";
-import HowItWorks from "@/components/HowItWorks"
+import Services from "@/components/services/Services";
+import Portfolio from "@/components/portfolio/PortfolioSection";
+import Testimonials from "@/components/testimonials/TestimonialsCarousel";
+import HowItWorks from "@/components/how-it-works/HowItWorksSection"
 import BigCTA from "@/components/BigCTA"
 import WhyChooseUs from "@/components/WhyChooseUs";
 import FAQ from "@/components/FAQ";
@@ -14,23 +13,23 @@ export default function Home() {
   return (
     <main>
 
-    <Hero />
+      <Hero />
 
-    <BrandStrip />
+      <BrandStrip />
 
-    <Services />
+      <Services />
 
-    <WhyChooseUs />
+      <WhyChooseUs />
 
-    <Portfolio />
+      <Portfolio />
 
-    <HowItWorks />
+      <HowItWorks />
 
-    <Testimonials />
+      <Testimonials />
 
-    <FAQ />
+      <FAQ />
 
-    <BigCTA />
+      <BigCTA />
 
     </main>
   )

@@ -43,12 +43,12 @@ const features = [
 export default function WhyChooseUs() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
-  const cursorRef  = useRef<HTMLDivElement>(null);
-  const cardRefs   = useRef<(HTMLDivElement | null)[]>([]);
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     const section = sectionRef.current;
-    const cursor  = cursorRef.current;
+    const cursor = cursorRef.current;
     if (!section || !cursor) return;
 
     // ── Cursor glow follow ──
@@ -73,14 +73,14 @@ export default function WhyChooseUs() {
       if (!card) return;
       card.addEventListener("mousemove", (e: MouseEvent) => {
         const rect = card.getBoundingClientRect();
-        const cx   = e.clientX - rect.left - rect.width  / 2;
-        const cy   = e.clientY - rect.top  - rect.height / 2;
+        const cx = e.clientX - rect.left - rect.width / 2;
+        const cy = e.clientY - rect.top - rect.height / 2;
         gsap.to(card, {
           rotateX: (-cy / rect.height) * 10,
-          rotateY: ( cx / rect.width)  * 10,
-          scale:   1.03,
+          rotateY: (cx / rect.width) * 10,
+          scale: 1.03,
           duration: 0.3,
-          ease:    "power2.out",
+          ease: "power2.out",
           transformPerspective: 800,
         });
       });
@@ -132,15 +132,15 @@ export default function WhyChooseUs() {
         ref={cursorRef}
         className="pointer-events-none absolute"
         style={{
-          width:        "600px",
-          height:       "600px",
+          width: "600px",
+          height: "600px",
           borderRadius: "50%",
-          background:   "radial-gradient(circle, rgba(37,99,235,0.1) 0%, transparent 70%)",
-          transform:    "translate(-50%, -50%)",
-          opacity:      0,
-          zIndex:       0,
-          willChange:   "transform",
-          
+          background: "radial-gradient(circle, rgba(37,99,235,0.1) 0%, transparent 70%)",
+          transform: "translate(-50%, -50%)",
+          opacity: 0,
+          zIndex: 0,
+          willChange: "transform",
+
         }}
       />
 
@@ -168,11 +168,11 @@ export default function WhyChooseUs() {
                 className="relative rounded-3xl p-8 flex flex-col gap-5 opacity-0"
                 style={{
                   // ── Clear white card — no backdrop-filter ──
-                  background:  "rgba(255,255,255,0.82)",
-                  border:      "1px solid rgba(255,255,255,0.9)",
-                  boxShadow:   "0 4px 24px rgba(37,99,235,0.07), inset 0 1px 0 rgba(255,255,255,1)",
-                  willChange:  "transform",
-                  cursor:      "default",
+                  background: "rgba(255,255,255,0.82)",
+                  border: "1px solid rgba(255,255,255,0.9)",
+                  boxShadow: "0 4px 24px rgba(37,99,235,0.07), inset 0 1px 0 rgba(255,255,255,1)",
+                  willChange: "transform",
+                  cursor: "default",
                   transformStyle: "preserve-3d",
                 }}
               >
@@ -197,7 +197,7 @@ export default function WhyChooseUs() {
                   className="w-12 h-12 rounded-2xl flex items-center justify-center"
                   style={{
                     background: "rgba(37,99,235,0.08)",
-                    border:     "1px solid rgba(37,99,235,0.12)",
+                    border: "1px solid rgba(37,99,235,0.12)",
                   }}
                 >
                   <Icon size={22} color="#2563EB" />

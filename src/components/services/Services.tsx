@@ -1,12 +1,11 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 
 const services = [
-  { num: "01", tag: "Development", title: "Web\nDevelopment",   desc: "Fast, responsive websites built to convert visitors into customers. Crafted with precision.",     img: "/web.png",    color: "#ea580c", strip: "Web Dev"    },
-  { num: "02", tag: "Mobile",      title: "App\nDevelopment",   desc: "Native & cross-platform apps that users love. Built for performance and scale.",                   img: "/app.png",    color: "#059669", strip: "App Dev"    },
-  { num: "03", tag: "Design",      title: "UI / UX\nDesign",    desc: "Interfaces that feel intuitive, delightful and keep users coming back for more.",                  img: "/uiux.png",   color: "#7c3aed", strip: "UI/UX"      },
-  { num: "04", tag: "Identity",    title: "Logo\nDesigning",    desc: "Bold identities that are unique, memorable and built to last a lifetime.",                         img: "/logo.png",   color: "#1d4ed8", strip: "Branding"   },
-  { num: "05", tag: "Growth",      title: "Digital\nMarketing", desc: "Campaigns that drive real, measurable growth for your business.",                                  img: "/market.png", color: "#0891b2", strip: "Marketing"  },
+  { num: "01", tag: "Digital Foundations", title: "Built to Evolve,\nNot Just Launch", desc: "We design and engineer digital platforms that grow with your business — resilient architectures, seamless interfaces, and performance that holds under pressure.", img: "/web.png", color: "#ea580c", strip: "Foundations", href: "/services/digital-foundations", tags: ["Web platforms", "Mobile applications", "API integrations", "Scalable infrastructure"] },
+  { num: "02", tag: "Perception & Interaction", title: "Designed to Be\nSeen & Used", desc: "From first impression to daily interaction, we craft cohesive experiences that align identity, interface, and emotion into a single, recognizable presence.", img: "/uiux.png", color: "#7c3aed", strip: "Perception", href: "/services/perception-interaction", tags: ["Brand identity", "UX & UI design", "Design systems", "Visual language"] },
+  { num: "03", tag: "Growth Mechanics", title: "Attention Is\nEngineered", desc: "We build growth systems that connect data, creativity, and distribution — turning visibility into predictable, measurable momentum.", img: "/app.png", color: "#059669", strip: "Growth", href: "/services/growth-mechanics", tags: ["Performance marketing", "SEO & content strategy", "Conversion optimization", "Analytics & tracking"] },
 ];
 
 export default function Services() {
@@ -17,7 +16,10 @@ export default function Services() {
       <div className="s-grid" />
 
       <div className="s-head">
-        <h2 className="s-h2">Our Services</h2>
+        <div>
+          <h2 className="s-h2">What We Do</h2>
+          <p className="s-sub">We design systems, not just screens.</p>
+        </div>
       </div>
 
       <div className="panel">
@@ -34,7 +36,12 @@ export default function Services() {
               <div className="svc-tag">{svc.num} — {svc.tag}</div>
               <h3 className="svc-title">{svc.title.split("\n").map((line, j) => (<span key={j}>{line}{j === 0 && <br />}</span>))}</h3>
               <p className="svc-desc">{svc.desc}</p>
-              <div className="svc-btn">Explore →</div>
+              <div className="svc-tags">
+                {svc.tags.map((t, j) => (
+                  <span key={j} className="svc-cap-tag">{t}</span>
+                ))}
+              </div>
+              <Link href={svc.href} className="svc-btn">Explore →</Link>
             </div>
           </div>
         ))}
@@ -60,6 +67,7 @@ export default function Services() {
           display: flex; justify-content: center;
         }
         .s-h2 { font-family: 'Clash Display', sans-serif; font-size: 44px; font-weight: 700; color: #0f172a; letter-spacing: -2px; line-height: 1; margin: 0; text-align: center; }
+        .s-sub { font-size: 15px; color: #64748b; font-weight: 400; margin: 12px 0 0; text-align: center; letter-spacing: -0.2px; }
 
         .panel { display: flex; height: 520px; position: relative; z-index: 2; }
         .svc { position: relative; overflow: hidden; cursor: pointer; flex: 0.5; border-right: 1px solid rgba(0,0,0,0.06); transition: flex 0.65s cubic-bezier(0.4,0,0.2,1); }
@@ -79,8 +87,10 @@ export default function Services() {
         .svc.active .svc-content { opacity: 1; transform: translateY(0); }
         .svc-tag { font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 10px; }
         .svc-title { font-family: 'Clash Display', sans-serif; font-size: 32px; font-weight: 700; color: #fff; letter-spacing: -1px; line-height: 1.1; margin-bottom: 10px; }
-        .svc-desc { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.7; font-weight: 300; max-width: 300px; margin-bottom: 20px; }
-        .svc-btn { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px 20px; border-radius: 999px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-family: 'Sora', sans-serif; }
+        .svc-desc { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.7; font-weight: 300; max-width: 340px; margin-bottom: 14px; }
+        .svc-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+        .svc-cap-tag { display: inline-block; padding: 4px 12px; border-radius: 999px; font-size: 10px; font-weight: 500; letter-spacing: 0.3px; color: rgba(255,255,255,0.75); background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); font-family: 'Sora', sans-serif; }
+        .svc-btn { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px 20px; border-radius: 999px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-family: 'Sora', sans-serif; text-decoration: none; }
         .svc-btn:hover { background: rgba(255,255,255,0.2); }
 
         /* ── Mobile: stacked cards ── */
@@ -116,7 +126,7 @@ export default function Services() {
             grid-template-columns: 1fr 1fr;
             flex-direction: unset;
           }
-          .svc:last-child { grid-column: span 2; height: 180px; }
+          .svc:last-child { height: 200px; }
         }
       `}</style>
     </section>

@@ -6,7 +6,7 @@ const brands = [
 
 export default function BrandStrip() {
   return (
-    <section className="relative bg-white overflow-hidden border-y border-gray-100 py-10">
+    <section className="relative bg-white overflow-hidden border-b border-gray-100 py-10">
 
       {/* APSLOCK watermark */}
       <div
@@ -16,7 +16,7 @@ export default function BrandStrip() {
           fontWeight: 900,
           letterSpacing: "-0.04em",
           whiteSpace: "nowrap",
-          background: "linear-gradient(to bottom, rgba(148,163,184,0.22) 0%, rgba(148,163,184,0.08) 60%, transparent 100%)",
+          background: "linear-gradient(to bottom, transparent 0%, rgba(148,163,184,0.06) 30%, rgba(148,163,184,0.18) 100%)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
           backgroundClip: "text",

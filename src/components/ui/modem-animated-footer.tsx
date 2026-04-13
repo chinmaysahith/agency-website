@@ -1,88 +1,277 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+
+const LaserFlow = dynamic(() => import("@/components/ui/LaserFlow"), { ssr: false });
 
 export default function Footer() {
+  const [time, setTime] = useState("");
+
+  useEffect(() => {
+    const update = () => {
+      const now = new Date();
+      const ist = now.toLocaleTimeString("en-GB", {
+        timeZone: "Asia/Kolkata",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      });
+      setTime(ist);
+    };
+    update();
+    const interval = setInterval(update, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
-    <section className="relative w-full mt-0 overflow-hidden">
-      <footer className="border-t bg-background mt-20 relative">
-
-        {/* Main Footer Content */}
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 p-6 py-16">
-
-          {/* Brand */}
-          <div>
-            <h2 className="text-xl font-semibold mb-4">APSLOCK</h2>
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              Strategic web design, and campaigns tailored to drive result
-              and conversions.
-            </p>
+    <>
+      <footer className="aps-footer">
+        {/* ── Top: Navigation columns ── */}
+        <div className="aps-footer-top">
+          <div className="aps-footer-col">
+            <span className="aps-footer-label">Navigation</span>
+            <Link href="/#services" className="aps-footer-link">Services</Link>
+            <Link href="/#work" className="aps-footer-link">Our Work</Link>
+            <Link href="/#faq" className="aps-footer-link">FAQs</Link>
+            <Link href="/contact" className="aps-footer-link">Contact</Link>
           </div>
 
-          {/* Company */}
-          <div>
-            <h3 className="font-semibold mb-4">Company</h3>
-            <ul className="space-y-3 text-sm text-muted-foreground">
-              <li><Link href="/#services">Services</Link></li>
-              <li><Link href="/#portfolio">Our Work</Link></li>
-              <li><Link href="/#achievements">Achievements</Link></li>
-              <li><Link href="/#faq">FAQs</Link></li>
-              <li><Link href="/contact">Contact</Link></li>
-            </ul>
+          <div className="aps-footer-col">
+            <span className="aps-footer-label">Social</span>
+            <Link href="#" className="aps-footer-link">Instagram ↗</Link>
+            <Link href="#" className="aps-footer-link">LinkedIn ↗</Link>
+            <Link href="#" className="aps-footer-link">Email ↗</Link>
           </div>
 
-          {/* Socials */}
-          <div>
-            <h3 className="font-semibold mb-4">Socials</h3>
-            <ul className="space-y-3 text-sm text-muted-foreground">
-              <li><Link href="#">Email ↗</Link></li>
-              <li><Link href="#">Instagram ↗</Link></li>
-              <li><Link href="#">LinkedIn ↗</Link></li>
-            </ul>
-          </div>
-
-          {/* Newsletter */}
-          <div>
-            <h3 className="font-semibold mb-4">Newsletter</h3>
-            <p className="text-muted-foreground text-sm mb-4">
-              Stay ahead with design & marketing tips and strategies
-              that drive results.
-            </p>
-
-            <div className="flex items-center border rounded-full px-4 py-2 bg-muted">
-              <input
-                type="email"
-                placeholder="Enter your email..."
-                className="flex-1 bg-transparent outline-none text-sm"
-              />
-              <button className="ml-3 px-4 py-2 rounded-full bg-foreground text-background text-sm">
-                →
-              </button>
-            </div>
-          </div>
-
-        </div>
-
-        {/* Bottom Section */}
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center px-6 py-6 text-sm text-muted-foreground border-t">
-          <p>© {new Date().getFullYear()} APSLOCK All rights reserved</p>
-
-          <div className="flex gap-6 mt-3 md:mt-0">
-            <Link href="#">Privacy Policy</Link>
-            <Link href="#">Terms of Service</Link>
+          <div className="aps-footer-col">
+            <span className="aps-footer-label">Legals</span>
+            <Link href="#" className="aps-footer-link">Privacy Policy</Link>
+            <Link href="#" className="aps-footer-link">Terms of Service</Link>
           </div>
         </div>
 
-        {/* BIG FADED BRAND TEXT (UNCHANGED STYLE) */}
-       <div 
-            className="bg-gradient-to-b from-blue-500/30 via-blue-500/10 to-transparent bg-clip-text text-transparent leading-none absolute left-1/2 -translate-x-1/2 bottom-40 md:bottom-32 font-extrabold tracking-tighter pointer-events-none select-none text-center px-4"
-            style={{ fontSize: "clamp(5rem, 15vw, 15rem)", maxWidth: "95vw" }}
-            >
-            APSLOCK
-            </div>
+        {/* ── Middle: Copyright / Time / Back to top ── */}
+        <div className="aps-footer-mid">
+          <span className="aps-footer-copy">
+            © {new Date().getFullYear()} APSLOCK. All rights reserved.
+          </span>
+          <span className="aps-footer-time">
+            India → {time}
+          </span>
+          <button onClick={scrollToTop} className="aps-footer-btt">
+            Back to top
+          </button>
+        </div>
 
+        {/* ── Bottom: Large APSLOCK text with LaserFlow ── */}
+        <div className="aps-footer-brand-section">
+          <div className="aps-footer-laser">
+            <LaserFlow
+              color="#38BDF8"
+              verticalSizing={1.5}
+              horizontalSizing={0.6}
+              fogIntensity={0.35}
+              fogScale={0.25}
+              wispDensity={0.8}
+              wispSpeed={12}
+              wispIntensity={4}
+              flowSpeed={0.3}
+              flowStrength={0.2}
+              decay={1.0}
+              falloffStart={1.1}
+              fogFallSpeed={0.5}
+              horizontalBeamOffset={0}
+              verticalBeamOffset={0.35}
+            />
+          </div>
+          <div className="aps-footer-brand-wrap">
+            <div className="aps-footer-brand" aria-hidden="true">APSLOCK</div>
+          </div>
+        </div>
       </footer>
-    </section>
+
+      <style jsx>{`
+        @import url('https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700;800&display=swap');
+
+        .aps-footer {
+          position: relative;
+          background: #ffffff;
+          overflow: hidden;
+          border-top: 1px solid rgba(0,0,0,0.06);
+          font-family: 'Sora', sans-serif;
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+        }
+
+        /* ── Top columns ── */
+        .aps-footer-top {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 40px;
+          max-width: 1100px;
+          margin: 0 auto;
+          padding: 64px 40px 48px;
+          width: 100%;
+        }
+
+        .aps-footer-col {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .aps-footer-label {
+          font-size: 11px;
+          font-weight: 500;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          color: #94a3b8;
+          margin-bottom: 8px;
+        }
+
+        .aps-footer-link {
+          font-size: 17px;
+          font-weight: 500;
+          color: #0f172a;
+          text-decoration: none;
+          transition: color 0.25s ease;
+          line-height: 1.6;
+          font-family: 'Clash Display', sans-serif;
+          letter-spacing: -0.3px;
+        }
+        .aps-footer-link:hover {
+          color: #3b82f6;
+        }
+
+        /* ── Middle row ── */
+        .aps-footer-mid {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          max-width: 1100px;
+          margin: 0 auto;
+          padding: 24px 40px 0;
+          border-top: 1px solid rgba(0,0,0,0.06);
+          width: 100%;
+        }
+
+        .aps-footer-copy,
+        .aps-footer-time {
+          font-size: 12px;
+          color: #94a3b8;
+          font-weight: 400;
+        }
+
+        .aps-footer-btt {
+          font-size: 12px;
+          color: #3b82f6;
+          background: none;
+          border: none;
+          cursor: pointer;
+          font-family: 'Sora', sans-serif;
+          font-weight: 500;
+          transition: opacity 0.25s ease;
+        }
+        .aps-footer-btt:hover {
+          opacity: 0.7;
+        }
+
+        /* ── Brand section ── */
+        .aps-footer-brand-section {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          position: relative;
+          background: #0b1120;
+          border-radius: 28px 28px 0 0;
+          margin-top: 40px;
+          overflow: hidden;
+        }
+
+        /* LaserFlow container */
+        .aps-footer-laser {
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          pointer-events: auto;
+        }
+
+        .aps-footer-brand-wrap {
+          position: relative;
+          z-index: 2;
+          width: 100%;
+          display: flex;
+          align-items: flex-end;
+          justify-content: center;
+          flex: 1;
+          min-height: 280px;
+        }
+
+        .aps-footer-brand {
+          font-family: 'Clash Display', sans-serif;
+          font-size: 15vw;
+          font-weight: 800;
+          letter-spacing: 0.06em;
+          line-height: 1;
+          white-space: nowrap;
+          pointer-events: none;
+          user-select: none;
+          width: 100%;
+          text-align: center;
+          color: transparent;
+          background: linear-gradient(
+            180deg,
+            rgba(56, 189, 248, 0.4) 0%,
+            rgba(56, 189, 248, 0.18) 50%,
+            rgba(56, 189, 248, 0.04) 100%
+          );
+          -webkit-background-clip: text;
+          background-clip: text;
+          padding-bottom: 24px;
+        }
+
+        /* ── Mobile ── */
+        @media (max-width: 767px) {
+          .aps-footer {
+            min-height: auto;
+          }
+
+          .aps-footer-top {
+            grid-template-columns: 1fr;
+            gap: 32px;
+            padding: 48px 24px 36px;
+          }
+
+          .aps-footer-mid {
+            flex-direction: column;
+            gap: 12px;
+            text-align: center;
+            padding: 20px 24px 0;
+          }
+
+          .aps-footer-brand-section {
+            border-radius: 20px 20px 0 0;
+            margin-top: 24px;
+          }
+
+          .aps-footer-brand-wrap {
+            min-height: 160px;
+          }
+
+          .aps-footer-brand {
+            font-size: 15vw;
+            padding-bottom: 16px;
+          }
+        }
+      `}</style>
+    </>
   );
 }
