@@ -85,6 +85,8 @@ export default function Hero() {
         .hero-section {
           position: relative;
           min-height: 100vh;
+          margin-top: -5rem;
+          padding-top: 2rem;
           display: flex;
           align-items: center;
           justify-content: center;

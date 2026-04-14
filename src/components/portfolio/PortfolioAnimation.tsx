@@ -25,7 +25,7 @@ export default function PortfolioAnimation({ children, title, subtitle }: Portfo
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  /* ── Vortex canvas renderer ── */
+  /* ── Flowing wave lines canvas ── */
   useEffect(() => {
     if (isMobile) return;
     const canvas = canvasRef.current;
@@ -34,10 +34,9 @@ export default function PortfolioAnimation({ children, title, subtitle }: Portfo
     if (!ctx) return;
 
     let raf = 0;
-    let dpr = 1;
 
     const resize = () => {
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const w = canvas.offsetWidth;
       const h = canvas.offsetHeight;
       canvas.width = w * dpr;
@@ -47,86 +46,60 @@ export default function PortfolioAnimation({ children, title, subtitle }: Portfo
     resize();
     window.addEventListener("resize", resize);
 
-    const RINGS = 28;          // number of concentric ellipses
-    const SPOKES = 48;         // radial lines per ring
-    const MAX_RX = 680;        // outer ellipse X radius
-    const MAX_RY = 220;        // outer ellipse Y radius (perspective squish)
-    const MIN_R = 4;           // innermost radius
-    const DEPTH_CURVE = 2.2;   // how aggressively rings compress toward center
+    // Define flowing wave curves — each is a unique organic path
+    const waves = [
+      // { yBase: fraction of height, amplitude, frequency, phase, color, lineWidth }
+      { yBase: 0.18, amp: 60,  freq: 0.003,  phase: 0,     color: "rgba(59,130,246,0.07)", lw: 1.5 },
+      { yBase: 0.25, amp: 45,  freq: 0.004,  phase: 1.2,   color: "rgba(59,130,246,0.05)", lw: 1.2 },
+      { yBase: 0.35, amp: 80,  freq: 0.0025, phase: 2.5,   color: "rgba(59,130,246,0.06)", lw: 1.8 },
+      { yBase: 0.72, amp: 55,  freq: 0.0035, phase: 0.8,   color: "rgba(59,130,246,0.07)", lw: 1.5 },
+      { yBase: 0.80, amp: 70,  freq: 0.003,  phase: 3.7,   color: "rgba(59,130,246,0.05)", lw: 1.2 },
+      { yBase: 0.88, amp: 40,  freq: 0.005,  phase: 5.0,   color: "rgba(59,130,246,0.06)", lw: 1.4 },
+      // Thinner accent lines
+      { yBase: 0.15, amp: 35,  freq: 0.006,  phase: 4.2,   color: "rgba(148,163,184,0.06)", lw: 0.8 },
+      { yBase: 0.45, amp: 90,  freq: 0.002,  phase: 1.8,   color: "rgba(148,163,184,0.04)", lw: 0.7 },
+      { yBase: 0.60, amp: 50,  freq: 0.0045, phase: 3.0,   color: "rgba(148,163,184,0.05)", lw: 0.8 },
+      { yBase: 0.92, amp: 30,  freq: 0.007,  phase: 2.2,   color: "rgba(148,163,184,0.06)", lw: 0.7 },
+    ];
 
     const draw = () => {
       const W = canvas.offsetWidth;
       const H = canvas.offsetHeight;
-      if (!ctx) return;
       ctx.clearRect(0, 0, W, H);
 
       const progress = progressRef.current; // 0 → 1
-      const cx = W / 2;
-      const cy = H * 0.55; // slightly below center
 
-      // How many rings to reveal based on scroll progress
-      const revealedRings = Math.floor(progress * RINGS * 1.5);
+      waves.forEach((wave) => {
+        // How much of this wave to draw (in pixels from left)
+        const drawLength = progress * W * 1.3; // slightly overshoot so it fills before scroll ends
+        if (drawLength <= 0) return;
 
-      for (let r = 0; r < RINGS; r++) {
-        if (r > revealedRings) break;
-
-        // Non-linear spacing: rings bunch up toward center
-        const t = r / (RINGS - 1);      // 0 (outer) → 1 (inner)
-        const curve = Math.pow(t, DEPTH_CURVE);
-        const rx = MAX_RX * (1 - curve) + MIN_R * curve;
-        const ry = MAX_RY * (1 - curve) + MIN_R * curve;
-
-        // Fade: outer rings are lighter, inner rings are darker
-        const ringAlpha = 0.06 + 0.18 * t;
-        const lineWidth = 0.5 + 0.5 * t;
-
-        // Ring opacity based on reveal progress (fade in)
-        const ringRevealT = Math.min(1, (revealedRings - r) / 3);
-        const alpha = ringAlpha * ringRevealT;
-        if (alpha <= 0) continue;
-
-        ctx.strokeStyle = `rgba(0,0,0,${alpha})`;
-        ctx.lineWidth = lineWidth;
-
-        // Draw the ellipse ring
         ctx.beginPath();
-        ctx.ellipse(cx, cy, Math.max(1, rx), Math.max(1, ry), 0, 0, Math.PI * 2);
-        ctx.stroke();
+        ctx.strokeStyle = wave.color;
+        ctx.lineWidth = wave.lw;
+        ctx.lineCap = "round";
 
-        // Draw spoke lines connecting this ring to the next inner ring
-        if (r < RINGS - 1 && r + 1 <= revealedRings) {
-          const t2 = (r + 1) / (RINGS - 1);
-          const curve2 = Math.pow(t2, DEPTH_CURVE);
-          const rx2 = MAX_RX * (1 - curve2) + MIN_R * curve2;
-          const ry2 = MAX_RY * (1 - curve2) + MIN_R * curve2;
+        const baseY = wave.yBase * H;
+        let started = false;
 
-          const spokeAlpha = (0.03 + 0.1 * t) * ringRevealT;
-          ctx.strokeStyle = `rgba(0,0,0,${spokeAlpha})`;
-          ctx.lineWidth = 0.4 + 0.3 * t;
+        for (let x = 0; x <= Math.min(drawLength, W); x += 2) {
+          // Composite sine waves for organic feel
+          const y = baseY
+            + Math.sin(x * wave.freq + wave.phase) * wave.amp
+            + Math.sin(x * wave.freq * 2.3 + wave.phase * 0.7) * (wave.amp * 0.3)
+            + Math.sin(x * wave.freq * 0.5 + wave.phase * 1.3) * (wave.amp * 0.5);
 
-          for (let s = 0; s < SPOKES; s++) {
-            const angle = (s / SPOKES) * Math.PI * 2;
-            const x1 = cx + rx * Math.cos(angle);
-            const y1 = cy + ry * Math.sin(angle);
-            const x2 = cx + rx2 * Math.cos(angle);
-            const y2 = cy + ry2 * Math.sin(angle);
-
-            ctx.beginPath();
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x2, y2);
-            ctx.stroke();
+          if (!started) {
+            ctx.moveTo(x, y);
+            started = true;
+          } else {
+            ctx.lineTo(x, y);
           }
         }
-      }
 
-      // Dark center point
-      if (progress > 0.3) {
-        const dotAlpha = Math.min(0.4, (progress - 0.3) * 0.6);
-        ctx.beginPath();
-        ctx.arc(cx, cy, 3, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0,0,0,${dotAlpha})`;
-        ctx.fill();
-      }
+        // Fade out the tail end
+        ctx.stroke();
+      });
 
       raf = requestAnimationFrame(draw);
     };
@@ -187,7 +160,26 @@ export default function PortfolioAnimation({ children, title, subtitle }: Portfo
   if (isMobile) {
     return (
       <div style={sectionStyle} className="py-20 px-5">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-2xl mx-auto">
+        {title && (
+          <div className="text-center mb-12">
+            <h2
+              style={{
+                fontFamily: "'Clash Display', 'Sora', sans-serif",
+                fontSize: "2rem",
+                fontWeight: 700,
+                color: "#0f172a",
+                letterSpacing: "-0.5px",
+                marginBottom: 8,
+              }}
+            >
+              {title}
+            </h2>
+            {subtitle && (
+              <p style={{ color: "#94a3b8", fontSize: "0.875rem" }}>{subtitle}</p>
+            )}
+          </div>
+        )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
           {children}
         </div>
       </div>
@@ -198,23 +190,38 @@ export default function PortfolioAnimation({ children, title, subtitle }: Portfo
     <div ref={wrapperRef} className="relative" style={sectionStyle}>
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden">
 
-        {/* Wireframe vortex canvas */}
+        {/* Flowing wave lines canvas */}
         <canvas
           ref={canvasRef}
           className="absolute inset-0 w-full h-full pointer-events-none"
-          style={{ zIndex: 0 }}
+          style={{ zIndex: 1 }}
         />
 
         {/* Heading */}
         {title && (
           <div className="absolute top-16 w-full text-center z-10">
-            <h2 className="text-3xl font-bold mb-3">{title}</h2>
-            {subtitle && <p className="text-gray-500 text-sm">{subtitle}</p>}
+            <h2
+              style={{
+                fontFamily: "'Clash Display', 'Sora', sans-serif",
+                fontSize: "2.25rem",
+                fontWeight: 700,
+                color: "#0f172a",
+                letterSpacing: "-0.5px",
+                marginBottom: 8,
+              }}
+            >
+              {title}
+            </h2>
+            {subtitle && (
+              <p style={{ color: "#94a3b8", fontSize: "0.875rem", fontFamily: "'Sora', sans-serif" }}>
+                {subtitle}
+              </p>
+            )}
           </div>
         )}
 
         {/* Cards */}
-        <div className="relative w-full max-w-6xl h-[380px]" style={{ zIndex: 5 }}>
+        <div className="relative w-full max-w-6xl h-[420px]" style={{ zIndex: 5 }}>
           {children.map((child, index) => (
             <div key={index} className="project-card absolute top-0">
               {child}

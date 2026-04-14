@@ -110,22 +110,15 @@ export default function HowItWorksSection() {
                   {/* Glow orb */}
                   <div className={`hc-glow${isActive ? " hc-glow-on" : ""}`} />
 
-                  {/* Watermark number (active only) */}
-                  <div className={`hc-watermark${isActive ? " hc-wm-on" : ""}`}>{step.num}</div>
+
 
                   {/* Header */}
                   <div className="hc-header">
-                    <span className={`hc-num${isActive ? " hc-num-on" : ""}`}>{step.num}</span>
                     <div className="hc-header-text">
                       <span className={`hc-tag${isActive || isReached ? " hc-tag-vis" : ""}`}>{step.tag}</span>
                       <h3 className={`hc-title${isActive ? " hc-title-on" : ""} ${isReached && !isActive ? "hc-title-reached" : ""}`}>{step.title}</h3>
                     </div>
-                    {/* Checkmark for reached steps */}
-                    {isReached && !isActive && (
-                      <svg className="hc-check" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                        <path d="M4 9.5l3.5 3.5L14 5" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    )}
+
                     {/* Arrow hint for unreached steps */}
                     {!isReached && !isActive && (
                       <svg className="hc-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -171,10 +164,9 @@ export default function HowItWorksSection() {
         {steps.map((step, i) => {
           const isActive = activeStep === i;
           return (
-            <div key={i} className={`hm${isActive ? " hm-on" : ""}`} onClick={() => setActiveStep(prev => prev === i ? null : i)}>
+            <div key={i} className={`hm${isActive ? " hm-on" : ""}`} onClick={() => setActiveStep(prev => prev === i ? 0 : i)}>
               <div className={`hc-bar${isActive ? " hc-bar-on" : ""}`} />
               <div className="hm-top">
-                <span className={`hc-num${isActive ? " hc-num-on" : ""}`}>{step.num}</span>
                 <div style={{ flex: 1 }}>
                   <span className="hm-tag">{step.tag}</span>
                   <h3 className={`hm-title${isActive ? " hm-title-on" : ""}`}>{step.title}</h3>

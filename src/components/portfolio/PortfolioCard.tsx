@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface PortfolioCardProps {
   title: string;
   description: string;
   tech: string[];
   index: number;
+  image: string;
   className?: string;
 }
 
@@ -16,6 +18,7 @@ export default function PortfolioCard({
   description,
   tech,
   index,
+  image,
   className = "",
 }: PortfolioCardProps) {
   const [isHovered, setIsHovered] = useState(false);
@@ -27,17 +30,22 @@ export default function PortfolioCard({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Card Image placeholder */}
+        {/* Card Image */}
         <div className="pcard-img">
+          <Image
+            src={image}
+            alt={title}
+            fill
+            style={{ objectFit: "cover" }}
+            sizes="280px"
+          />
           <div className="pcard-img-overlay" />
         </div>
 
         <div className="pcard-content">
-          {/* Always-visible header */}
+          {/* Header */}
           <div className="pcard-header">
             <div className="pcard-meta">
-              <span className="pcard-date">Project {String(index + 1).padStart(2, "0")}</span>
-              <span className="pcard-dot">•</span>
               <div className="pcard-status-wrap">
                 <span className="pcard-status-dot" />
                 <span>Active</span>
@@ -80,38 +88,59 @@ export default function PortfolioCard({
 
       <style jsx>{`
         .pcard {
-          width: 260px;
+          width: 280px;
           background: #ffffff;
           border: 1px solid rgba(0,0,0,0.06);
-          border-radius: 16px;
+          border-radius: 18px;
           overflow: hidden;
           cursor: pointer;
-          transition: transform 0.35s cubic-bezier(0.25,1,0.5,1),
-                      box-shadow 0.35s ease;
+          transition: transform 0.4s cubic-bezier(0.25,1,0.5,1),
+                      box-shadow 0.4s ease,
+                      border-color 0.4s ease;
+          position: relative;
         }
         .pcard-hovered {
-          transform: translateY(-8px);
-          box-shadow: 0 20px 50px -12px rgba(59,130,246,0.15),
-                      0 0 0 1px rgba(59,130,246,0.08);
+          transform: translateY(-10px) scale(1.02);
+          box-shadow: 0 25px 60px -15px rgba(59,130,246,0.18),
+                      0 10px 30px -10px rgba(0,0,0,0.08),
+                      0 0 0 1px rgba(59,130,246,0.1);
+          border-color: rgba(59,130,246,0.15);
         }
 
         /* Image */
         .pcard-img {
           position: relative;
-          height: 140px;
+          height: 170px;
           width: 100%;
-          background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
           overflow: hidden;
+          background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
         }
         .pcard-img-overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(to top, rgba(0,0,0,0.06), transparent);
+          background: linear-gradient(
+            to top,
+            rgba(255,255,255,0.95) 0%,
+            rgba(255,255,255,0.3) 30%,
+            transparent 60%
+          );
+          z-index: 1;
+          transition: opacity 0.35s ease;
         }
+        .pcard-hovered .pcard-img-overlay {
+          background: linear-gradient(
+            to top,
+            rgba(255,255,255,0.9) 0%,
+            rgba(255,255,255,0.1) 40%,
+            transparent 70%
+          );
+        }
+
+
 
         /* Content */
         .pcard-content {
-          padding: 16px 18px 0;
+          padding: 14px 18px 0;
         }
 
         /* Header */
@@ -127,8 +156,6 @@ export default function PortfolioCard({
           color: #94a3b8;
           font-family: 'Sora', sans-serif;
         }
-        .pcard-date { }
-        .pcard-dot { }
         .pcard-status-wrap {
           display: flex;
           align-items: center;
@@ -138,23 +165,28 @@ export default function PortfolioCard({
           width: 6px; height: 6px;
           border-radius: 50%;
           background: #22c55e;
+          box-shadow: 0 0 6px rgba(34,197,94,0.4);
         }
         .pcard-title {
           font-family: 'Clash Display', 'Sora', sans-serif;
-          font-size: 17px;
+          font-size: 18px;
           font-weight: 600;
           color: #0f172a;
           margin: 6px 0 0;
           letter-spacing: -0.4px;
           line-height: 1.25;
+          transition: color 0.3s ease;
+        }
+        .pcard-hovered .pcard-title {
+          color: #1e3a5f;
         }
 
         /* Expandable section */
         .pcard-expand {
           display: grid;
           grid-template-rows: 0fr;
-          transition: grid-template-rows 0.4s cubic-bezier(0.4,0,0.2,1),
-                      margin-top 0.4s cubic-bezier(0.4,0,0.2,1);
+          transition: grid-template-rows 0.45s cubic-bezier(0.4,0,0.2,1),
+                      margin-top 0.45s cubic-bezier(0.4,0,0.2,1);
           margin-top: 0;
         }
         .pcard-expand-on {
@@ -191,7 +223,7 @@ export default function PortfolioCard({
           font-size: 10px;
           font-weight: 500;
           font-family: 'Sora', sans-serif;
-          padding: 3px 10px;
+          padding: 4px 12px;
           border-radius: 999px;
           background: rgba(59,130,246,0.06);
           color: #3b82f6;
@@ -219,10 +251,11 @@ export default function PortfolioCard({
           color: #0f172a;
           text-decoration: none;
           font-family: 'Sora', sans-serif;
-          transition: color 0.25s ease;
+          transition: color 0.25s ease, gap 0.25s ease;
         }
         .pcard-link:hover {
           color: #3b82f6;
+          gap: 10px;
         }
       `}</style>
     </>

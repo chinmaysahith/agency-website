@@ -6,23 +6,27 @@ import PortfolioCard from "./PortfolioCard";
 const projects = [
   {
     title: "Startup Website",
-    description: "Modern marketing website built with Next.js.",
+    description: "Modern marketing website built with Next.js and sleek animations for a fast-growing SaaS startup.",
     tech: ["Next.js", "Tailwind", "Vercel"],
+    image: "/projects/startup-website.png",
   },
   {
     title: "AI SaaS Platform",
-    description: "AI powered SaaS dashboard and application.",
+    description: "Full-stack AI dashboard with real-time analytics, user management, and Stripe billing integration.",
     tech: ["Next.js", "AI", "Stripe"],
+    image: "/projects/ai-saas-platform.png",
   },
   {
     title: "E-commerce Store",
-    description: "High conversion online store with optimized checkout.",
+    description: "High-conversion Shopify store with a custom theme, optimized checkout flow, and 40% uplift in sales.",
     tech: ["Shopify", "React", "Node"],
+    image: "/projects/ecommerce-store.png",
   },
   {
     title: "Brand Identity",
-    description: "Complete branding system and visual identity.",
+    description: "Complete branding system including logo, typography, color palette, and brand guidelines.",
     tech: ["Branding", "Design", "Strategy"],
+    image: "/projects/brand-identity.png",
   },
 ];
 
@@ -41,6 +45,7 @@ export default function PortfolioSection() {
             description={project.description}
             tech={project.tech}
             index={index}
+            image={project.image}
           />
         ))}
       </PortfolioAnimation>
